@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AUTODIDACT: self-improving robot learning loop | Hamza Tariq</title>
+  <meta name="description" content="Case study: AUTODIDACT, an autonomous learning loop for a simulated cath-lab robot built in 48 hours at the Siemens Healthineers Robotics & AI Hackathon 2026 (semi-finalist).">
+  <meta name="theme-color" content="#16181b">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="AUTODIDACT: self-improving robot learning loop | Hamza Tariq">
+  <meta property="og:description" content="An autonomous learning loop for a simulated cath-lab robot, built in 48 hours by a team of five.">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="../assets/fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../css/style.css">
+  <script>document.documentElement.classList.add("js");</script>
+</head>
+<body data-root="../">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- Icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 7l8.5 6 8.5-6"/></g></symbol>
+    <symbol id="i-linkedin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7.5 10.5V17M7.5 7.2v.1M11.5 17v-6.5M11.5 13.5a2.5 2.5 0 0 1 5 0V17"/></g></symbol>
+    <symbol id="i-github" viewBox="0 0 24 24"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4M9 18c-4.51 2-5-2-7-2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-robot" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21h9M8.5 21v-5l5-6.5 5.5 2"/><circle cx="8.5" cy="16" r="1.6"/><circle cx="13.5" cy="9.5" r="1.6"/><path d="M19 11.5l1.5-2M19 11.5l1.8 1.4"/></g></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3.5"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></g></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 21h18M6 17v-5M11 17V6M16 17v-8M21 17v-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M13.5 4l-3 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-db" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></g></symbol>
+    <symbol id="i-flow" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="4" width="7" height="6" rx="1"/><rect x="14" y="14" width="7" height="6" rx="1"/><path d="M10 7h4a3 3 0 0 1 3 3v4"/></g></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></g></symbol>
+  </defs>
+</svg>
+
+<header class="site-header">
+  <nav class="wrap nav" aria-label="Main">
+    <a class="brand" href="../index.html" aria-label="Hamza Tariq, home">
+      <svg class="brand-mark" viewBox="0 0 28 28" aria-hidden="true"><rect x=".75" y=".75" width="26.5" height="26.5" rx="5" fill="none" stroke="#d4b072" stroke-width="1.5"/><path d="M8 7v14M8 14h7M15 7v14M15 7h6M18 7v14" fill="none" stroke="#ebe8e1" stroke-width="1.7" stroke-linecap="round"/></svg>
+      <span>Hamza Tariq</span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu"><span></span></button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="../index.html#about">About</a></li>
+      <li><a href="../index.html#skills">Skills</a></li>
+      <li><a href="../index.html#experience">Experience</a></li>
+      <li><a href="../index.html#projects">Projects</a></li>
+      <li><a href="../index.html#education">Education</a></li>
+      <li><a href="../index.html#contact">Contact</a></li>
+      <li><a class="nav-cv" href="../assets/Hamza_Tariq_CV.pdf" download>Download CV</a></li>
+    </ul>
+  </nav>
+</header>
+
+
+<main id="main">
+  <header class="cs-hero">
+    <div class="wrap">
+      <p class="breadcrumb"><a href="../index.html#projects">Projects</a> / AUTODIDACT</p>
+      <h1 class="cs-title">AUTODIDACT: a self-improving robot learning loop</h1>
+      <p class="cs-sub">An autonomous learning loop for a simulated cath-lab robot that finds gaps in its own training data, asks for targeted demonstrations, retrains, and promotes a new policy only when a statistical test shows it is better.</p>
+      <dl class="cs-meta">
+        <div><dt>Event</dt><dd>Siemens Healthineers Robotics &amp; AI Hackathon</dd></div>
+        <div><dt>Where and when</dt><dd>Erlangen, 2026</dd></div>
+        <div><dt>Team</dt><dd>Five people, built in 48 hours</dd></div>
+        <div><dt>Outcome</dt><dd>Semi-finalist</dd></div>
+      </dl>
+      <p style="margin-top:1.5rem"><a class="text-link" data-repo="autodidact" href="#" hidden>View repository <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></p>
+    </div>
+  </header>
+
+  <div class="wrap cs-layout">
+    <nav class="cs-toc" aria-label="On this page">
+      <ol>
+        <li><a href="#problem">Problem and motivation</a></li>
+        <li><a href="#architecture">System architecture</a></li>
+        <li><a href="#workflow">Learning-loop workflow</a></li>
+        <li><a href="#contributions">My contributions</a></li>
+        <li><a href="#safety">Safety and validation</a></li>
+        <li><a href="#results">Results</a></li>
+        <li><a href="#lessons">Lessons learned</a></li>
+      </ol>
+    </nav>
+
+    <div>
+      <section class="cs-section" id="problem" aria-labelledby="h-problem">
+        <h2 id="h-problem">Problem and motivation</h2>
+        <p>Robot policies learned from demonstrations are only as good as the data behind them. Finding out where a policy is weak, collecting the right new demonstrations, and deciding whether a retrained model is actually better are usually manual, slow and hard to audit.</p>
+        <p>In a clinical setting such as a cath lab, every model update also has to be safe and traceable. The challenge was to close that loop autonomously: let the system improve itself while keeping each decision explainable and the robot inside its safety constraints.</p>
+        <div class="ph-grid">
+          <figure>
+            <div class="ph" data-img="autodidact-environment" data-alt="Simulated cath-lab robot environment">
+              <div><svg class="ph-icon" aria-hidden="true"><use href="#i-image"/></svg><p class="ph-label">Simulated robot environment</p><p class="ph-path">slot: autodidact-environment</p></div>
+            </div>
+            <figcaption>Screenshot placeholder: the simulated cath-lab scene.</figcaption>
+          </figure>
+          <figure>
+            <div class="ph" data-img="autodidact-mujoco" data-alt="MuJoCo digital twin of the FR3 Duo">
+              <div><svg class="ph-icon" aria-hidden="true"><use href="#i-image"/></svg><p class="ph-label">MuJoCo simulation</p><p class="ph-path">slot: autodidact-mujoco</p></div>
+            </div>
+            <figcaption>Screenshot placeholder: the MuJoCo digital twin of the FR3 Duo.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="cs-section" id="architecture" aria-labelledby="h-arch">
+        <h2 id="h-arch">System architecture</h2>
+        <p>The system runs against a <strong>MuJoCo digital twin of the FR3 Duo</strong>. Around the learned policy sit the components that make the loop autonomous and auditable: data validation and failure analysis, retraining, a statistical promotion gate, a safety filter between the policy and the robot, a decision ledger and a live dashboard.</p>
+        <figure class="arch">
+          <svg viewBox="0 0 760 330" role="img" aria-labelledby="arch-t">
+            <title id="arch-t">Conceptual architecture: the policy drives the MuJoCo twin through a safety filter; run data feeds validation and gap analysis, which triggers demonstrations and retraining; a statistical gate decides promotion; all decisions are logged to a ledger and shown on a dashboard.</title>
+            <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" fill="#8fb0c7"/></marker></defs>
+            <g font-family="Archivo, sans-serif" font-size="13" fill="#ebe8e1" text-anchor="middle">
+              <g fill="#1f2328" stroke="#31373e" stroke-width="1.2">
+                <rect x="20" y="40" width="150" height="56" rx="8"/>
+                <rect x="230" y="40" width="150" height="56" rx="8" stroke="#d4b072"/>
+                <rect x="440" y="40" width="150" height="56" rx="8"/>
+                <rect x="440" y="160" width="150" height="56" rx="8"/>
+                <rect x="230" y="160" width="150" height="56" rx="8"/>
+                <rect x="20" y="160" width="150" height="56" rx="8"/>
+                <rect x="20" y="262" width="360" height="48" rx="8"/>
+                <rect x="440" y="262" width="300" height="48" rx="8"/>
+                <rect x="630" y="40" width="110" height="176" rx="8" stroke-dasharray="4 4"/>
+              </g>
+              <text x="95" y="66">Learned policy</text><text x="95" y="83" font-size="11" fill="#a5aab0">current version</text>
+              <text x="305" y="66">Safety filter</text><text x="305" y="83" font-size="11" fill="#a5aab0">stop-and-resume</text>
+              <text x="515" y="66">MuJoCo twin</text><text x="515" y="83" font-size="11" fill="#a5aab0">FR3 Duo</text>
+              <text x="515" y="186">Run data</text><text x="515" y="203" font-size="11" fill="#a5aab0">trajectories, outcomes</text>
+              <text x="305" y="186">Validation</text><text x="305" y="203" font-size="11" fill="#a5aab0">failure and gap analysis</text>
+              <text x="95" y="186">Retrain + test</text><text x="95" y="203" font-size="11" fill="#a5aab0">statistical gate</text>
+              <text x="200" y="291">Decision ledger (every update logged)</text>
+              <text x="590" y="291">Live dashboard: data, runs, decisions</text>
+              <text x="685" y="122" font-size="12">Targeted</text><text x="685" y="138" font-size="12">demos</text>
+            </g>
+            <g fill="none" stroke="#8fb0c7" stroke-width="1.3" marker-end="url(#ah)">
+              <path d="M170,68H226"/><path d="M380,68H436"/><path d="M515,96V156"/><path d="M440,188H384"/><path d="M230,188H174"/>
+              <path d="M95,160V100" stroke="#d4b072"/>
+              <path d="M590,188H626" stroke-dasharray="3 4"/><path d="M630,150H600Q590,150 590,160" stroke-dasharray="3 4"/>
+              <path d="M95,216V258" opacity=".6"/><path d="M305,216V258" opacity=".6"/><path d="M515,216V258" opacity=".6"/>
+            </g>
+            <text x="106" y="134" font-family="Archivo, sans-serif" font-size="11" fill="#d4b072">promote only if better</text>
+          </svg>
+          <figcaption>Conceptual overview drawn for this page, not an exported system diagram. Replace with the team's architecture diagram if available.</figcaption>
+        </figure>
+        <figure>
+          <div class="ph" data-img="autodidact-architecture" data-alt="AUTODIDACT learning-loop architecture diagram">
+            <div><svg class="ph-icon" aria-hidden="true"><use href="#i-image"/></svg><p class="ph-label">Learning-loop architecture (original diagram)</p><p class="ph-path">slot: autodidact-architecture</p></div>
+          </div>
+        </figure>
+      </section>
+
+      <section class="cs-section" id="workflow" aria-labelledby="h-flow">
+        <h2 id="h-flow">Learning-loop workflow</h2>
+        <p>Each cycle follows the same sequence. The diagram below is a conceptual summary of the loop as described in the project.</p>
+        <ol class="loop">
+          <li><strong>Identify gaps</strong><span>Find where the training data does not cover what the policy needs.</span></li>
+          <li><strong>Request demonstrations</strong><span>Ask for targeted demonstrations for those gaps.</span></li>
+          <li><strong>Validate data</strong><span>Check incoming data before it is used for training.</span></li>
+          <li><strong>Retrain policy</strong><span>Train a candidate policy on the extended dataset.</span></li>
+          <li><strong>Evaluate statistically</strong><span>Compare candidate and current policy with a statistical test.</span></li>
+          <li><strong>Promote if better</strong><span>Replace the current policy only when the test shows an improvement.</span></li>
+        </ol>
+      </section>
+
+      <section class="cs-section" id="contributions" aria-labelledby="h-contrib">
+        <h2 id="h-contrib">My contributions</h2>
+        <p>AUTODIDACT was a five-person team effort. My part focused on the reliability, safety and traceability of the loop:</p>
+        <ul class="cs-list">
+          <li><strong>Data validation and failure-analysis tooling</strong> to check demonstration data and understand why runs failed.</li>
+          <li><strong>A safety filter with stop-and-resume</strong> that halts motion when the robot approaches a keep-out zone and resumes safely afterwards.</li>
+          <li><strong>A decision ledger</strong> that logs every model-update decision, so each policy change can be traced.</li>
+          <li><strong>Contributed to the live dashboard</strong> showing data, robot runs and system decisions.</li>
+        </ul>
+        <figure>
+          <div class="ph" data-img="autodidact-dashboard" data-alt="AUTODIDACT live dashboard">
+            <div><svg class="ph-icon" aria-hidden="true"><use href="#i-image"/></svg><p class="ph-label">System dashboard</p><p class="ph-path">slot: autodidact-dashboard</p></div>
+          </div>
+          <figcaption>Screenshot placeholder: live dashboard with data, runs and decisions.</figcaption>
+        </figure>
+      </section>
+
+      <section class="cs-section" id="safety" aria-labelledby="h-safety">
+        <h2 id="h-safety">Safety and validation</h2>
+        <p>Three mechanisms keep the loop safe and accountable:</p>
+        <ul class="cs-list">
+          <li><strong>Safety filter.</strong> Sits between the policy and the robot and stops motion that would enter a keep-out zone, then resumes.</li>
+          <li><strong>Statistical promotion gate.</strong> A retrained policy only replaces the current one when a statistical test shows it is better, so the system cannot drift to a worse model on a lucky run.</li>
+          <li><strong>Decision ledger.</strong> Every model update is logged, making the system's choices auditable after the fact.</li>
+        </ul>
+      </section>
+
+      <section class="cs-section" id="results" aria-labelledby="h-results">
+        <h2 id="h-results">Results</h2>
+        <div class="results">
+          <div><span class="stat-value">24 → 0</span><p class="stat-label">Keep-out-zone violations across 40 runs after adding the safety filter</p></div>
+          <div><span class="stat-value">66<small>min</small></span><p class="stat-label">One complete autonomous cycle, end to end, without human intervention</p></div>
+          <div><span class="stat-value">48<small>h</small></span><p class="stat-label">From start to working system, as a team of five; semi-finalist</p></div>
+        </div>
+        <div class="ph-grid">
+          <figure class="wide">
+            <div class="ph" data-img="autodidact-team" data-alt="AUTODIDACT team at the Siemens Healthineers hackathon">
+              <div><svg class="ph-icon" aria-hidden="true"><use href="#i-image"/></svg><p class="ph-label">Hackathon presentation or team photo</p><p class="ph-path">slot: autodidact-team</p></div>
+            </div>
+          </figure>
+        </div>
+      </section>
+
+      <section class="cs-section" id="lessons" aria-labelledby="h-lessons">
+        <h2 id="h-lessons">Lessons learned</h2>
+        <!-- DRAFT: these takeaways are a starting point. Edit them so they reflect your own experience. -->
+        <ul class="cs-list">
+          <li><strong>Treat safety as its own layer.</strong> A filter that sits outside the learned policy can be tested and measured on its own, independent of how the policy changes.</li>
+          <li><strong>Autonomy needs a clear acceptance rule.</strong> Promoting a model only after a statistical test turns "seems better" into a decision the system can make on its own.</li>
+          <li><strong>Traceability builds trust.</strong> Logging each decision made it possible to explain what the system did and why, which matters for medical robotics.</li>
+          <li><strong>Scope hard under time pressure.</strong> Forty-eight hours forced the team to agree early on a loop that could run end to end, then improve it.</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+
+  <div class="wrap cs-next">
+    <a class="text-link" href="../index.html#projects"><svg aria-hidden="true" style="transform:scaleX(-1)"><use href="#i-arrow"/></svg>All projects</a>
+    <a class="text-link" href="bat-uav.html">Next: Bat-inspired micro UAV <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>© <span data-year>2026</span> Hamza Tariq</span>
+    <span><a href="mailto:hamza1.htzs@gmail.com">Email</a> &nbsp; <a href="https://linkedin.com/in/hamza-t-795a20218" target="_blank" rel="noopener">LinkedIn</a> <span data-link="github" class="is-unset">&nbsp; <a href="#" target="_blank" rel="noopener">GitHub</a></span></span>
+  </div>
+</footer>
+
+<script src="../js/config.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>
