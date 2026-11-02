@@ -56,7 +56,10 @@
     window.addEventListener("resize", function () { if (window.innerWidth > 860) setMenu(false); });
   }
 
-  function onScroll() { if (header) header.classList.toggle("is-scrolled", window.scrollY > 8); }
+  function onScroll() {
+    if (header) header.classList.toggle("is-scrolled", window.scrollY > 8);
+    if (window.scrollY < 200) document.querySelectorAll('.nav-links a[aria-current="true"]').forEach(function (a) { a.removeAttribute("aria-current"); });
+  }
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
@@ -82,6 +85,26 @@
   }
   spy('.nav-links a[href^="#"]', true);
   spy(".cs-toc a", false);
+
+  /* ---------- gentle reveal on scroll ---------- */
+  var revealSel = ".section-head, .about-copy, .area, .skill-group, .role-feature, .tl-item, .flagship, .project-card, " +
+    ".minor-projects, .edu-item, .lead-item, .two-col > div, .contact-panel, .cs-section, .proj-entry";
+  var revealEls = Array.prototype.slice.call(document.querySelectorAll(revealSel));
+  if (!reduceMotion && "IntersectionObserver" in window) {
+    revealEls.forEach(function (el) {
+      // small stagger between siblings of the same kind
+      var i = 0, s = el.previousElementSibling;
+      while (s && i < 4) { if (s.className === el.className) i++; s = s.previousElementSibling; }
+      el.style.setProperty("--reveal-delay", (i * 0.07) + "s");
+      el.classList.add("reveal");
+    });
+    var rio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("is-in"); rio.unobserve(e.target); }
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    revealEls.forEach(function (el) { rio.observe(el); });
+  }
 
   /* ---------- footer year ---------- */
   document.querySelectorAll("[data-year]").forEach(function (el) { el.textContent = new Date().getFullYear(); });

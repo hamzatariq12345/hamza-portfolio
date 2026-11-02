@@ -147,4 +147,14 @@ Settings → Pages → Source: **Deploy from a branch** → `main` / `(root)`. T
 
 ## Customising the design
 
-All colours, fonts and spacing are CSS variables at the top of `css/style.css` (`--brass` is the accent colour, `--steel` is the drawing line colour). The hero drawing is an inline SVG in `index.html`, and its animation is at the bottom of `js/main.js`. It respects the operating system's "reduce motion" setting.
+All theme settings are in the **THEME CONTROLS** block at the top of `css/style.css`:
+
+- `--c-blue`, `--c-violet`, `--c-cyan`, `--c-teal`: the accent palette, written as `R G B` numbers (e.g. `92 132 255`).
+- `--glow`: one dial for the strength of every glow (0 = off, 1 = very strong).
+- `--bg-main`, `--bg-secondary`, `--card-bg`, `--card-border`: base backgrounds and cards.
+- `--<section>-bg`, `--<section>-glow-1`, `--<section>-glow-2`: each section's own background and lights (hero, about, skills, experience, projects, education, leadership, contact).
+- `--autodidact-a/-b`, `--uav-a/-b`, `--fire-a/-b`, `--wind-a/-b`, `--rope-a/-b`: the two-colour gradient of each project card.
+
+Each section has its own class (`.section--hero`, `.section--about` …) if you want to restyle one completely.
+
+Animations (hero load, drifting light, moving grid, scroll reveal) switch off automatically when the visitor's system has "reduce motion" turned on.
